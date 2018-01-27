@@ -2,6 +2,8 @@
 """
 import importlib
 
+import pandas as pd
+
 
 def main(data_df=None,
          data_source=None,
@@ -58,7 +60,7 @@ def load_data(data_source):
     Load labeled data.
     """
     data_df = pd.read_pickle(
-        "data/{}/data.pkl".format(data_source))
+        "data/{}/train_data.pkl".format(data_source))
     return data_df
 
 
@@ -76,8 +78,10 @@ def init_model(model_type):
 
 
 if __name__ == '__main__':
-    for source in ["blabla", "blabla"]:
-        for model_str in ["random", "doityourself", "scikit_learn"]:
+    for source in ["us_election", "titanic"]:
+        for model_str in ["scikit_learn_SVC"]:
             main(data_df=None,
                  data_source=source,
-                 model_type=model_str)
+                 model_type=model_str,
+                 initial_version=None,
+                 trained_version=source)

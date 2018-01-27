@@ -3,22 +3,26 @@ Script to preprocess the kaggle titanic dataset.
 """
 import pandas as pd
 
+import tools
+
 pd.set_option('display.width', 800)
 
-def main():
+
+def main(ratio):
     """
     Preprocess the data.
     """
     # Load the raw data
-    raw_data_df = load_raw_data(path_raw_data="raw_data/data.csv")
+    raw_data_df = load_raw_data(path_raw_data="data/titanic/raw_data/data.csv")
     # Study data
     study_data(raw_data_df)
     # Transform the data
-    data_df = process(raw_data_df)
+    train_data_df, test_data_df = process(raw_data_df, ratio)
     # Study transformed data
-    study_data(data_df)
+    study_data(train_data_df)
     # Store the data
-    store(data_df, path_preprocessed_data="data.pkl")
+    store(train_data_df, path_preprocessed_data="data/titanic/train_data.pkl")
+    store(test_data_df, path_preprocessed_data="data/titanic/test_data.pkl")
 
 
 def load_raw_data(path_raw_data):
@@ -44,7 +48,8 @@ def study_data(data_df):
     print("- missing values :\n{}\n".format(data_df.isnull().sum()))
 
 
-def process(raw_data_df):
+@tools.debug
+def process(raw_data_df, ratio):
     """
     Process the data so it can be used by the mdoel
     """
@@ -64,8 +69,16 @@ def process(raw_data_df):
     # Change output
     data_df["Survived"] = data_df["Survived"].apply(
         lambda x: float(-1) if x == float(0) else x)
+    # Sample
+    data_df = data_df.sample(frac=1,
+                             replace=True,
+                             random_state=2).reset_index(drop=True)
+    alpha = int(len(data_df)*ratio)
+    # Separate
+    train_data_df = data_df.iloc[:alpha, :]
+    test_data_df = data_df.iloc[alpha:, :]
     # Return value.
-    return data_df
+    return train_data_df, test_data_df
 
 
 def store(data_df, path_preprocessed_data):
@@ -73,7 +86,3 @@ def store(data_df, path_preprocessed_data):
     data_df.to_pickle(
         path_preprocessed_data,
     )
-
-
-if __name__ == '__main__':
-    main()

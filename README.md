@@ -1,2 +1,3 @@
-# pySVM
-Support vector machine from scratch.
+# Implementation of Support Vector Machine algorithm
+
+

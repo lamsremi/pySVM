@@ -2,6 +2,8 @@
 """
 import importlib
 
+import pandas as pd
+
 
 def main(data_df=None,
          model_type=None,
@@ -33,6 +35,16 @@ def main(data_df=None,
     return prediction_df
 
 
+# @tools.debug
+def load_data(data_source):
+    """
+    Load labeled data.
+    """
+    data_df = pd.read_pickle(
+        "data/{}/test_data.pkl".format(data_source))
+    return data_df
+
+
 def init_model(model_type):
     """Init model.
     """
@@ -44,3 +56,12 @@ def init_model(model_type):
 
     # Return model
     return model
+
+if __name__ == '__main__':
+    for source in ["us_election", "titanic"]:
+        predict_data = load_data(source).iloc[10:20, :-1]
+        for model_str in ["scikit_learn_SVC"]:
+            main(data_df=predict_data,
+                 model_type=model_str,
+                 model_version=source,
+                 loaded_model=None)
