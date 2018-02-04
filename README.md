@@ -19,7 +19,7 @@ It is also a valuable exercice to practice programming in python language.
 
 ## Code structure
 
-The code is structured as follow:
+The code is structured as follow :
 ```
 pySVM
 ├- docs/
