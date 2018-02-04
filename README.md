@@ -3,14 +3,12 @@
 
 ## Introduction
 
-This module presents X different implementations of the same SVM models :
+This module presents 2 different implementations of an SVM model :
 * The first implementation uses scikit learn framework.
 * The second is coded from scratch.
 
 The implemented model is a SVM model with the following attributes:
 * Sequential Minimal Optimization (SMO) algorithm.
-* blabla
-* blabla
 
 
 ## Motivation
